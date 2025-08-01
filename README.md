@@ -14,7 +14,7 @@
 
 ## 🛠️ تکنولوژی‌های استفاده شده
 - **Frontend**: Vue.js 2, HTML5, CSS3, JavaScript (ES6+)
-- **API**: OpenWeatherMap
+
 - **ابزارها**: Axios, Font Awesome, Geolocation API
 
 ## 🚀 راه‌اندازی پروژه
