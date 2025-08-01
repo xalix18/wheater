@@ -1027,3 +1027,90 @@ body.dark-mode {
         grid-template-columns: 1fr;
     }
 }
+
+/* جایگزین کردن استایل‌های tech-stack با social-links */
+.social-links {
+    display: flex;
+    gap: 20px;
+    font-size: 28px;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--background);
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.dark-mode .social-link {
+    background: var(--dark-background);
+    color: var(--dark-secondary);
+}
+
+.social-link:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px var(--shadow);
+}
+
+/* استایل‌های خاص برای هر شبکه اجتماعی */
+.social-link.github:hover {
+    background: #333;
+    color: white;
+}
+
+.social-link.instagram:hover {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    color: white;
+}
+
+.social-link.telegram:hover {
+    background: #0088cc;
+    color: white;
+}
+
+/* انیمیشن برای آیکون‌ها */
+.social-link i {
+    transition: all 0.3s ease;
+}
+
+.social-link:hover i {
+    transform: scale(1.1);
+}
+
+/* افکت موج برای لینک‌ها */
+.social-link::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.social-link:active::before {
+    width: 300px;
+    height: 300px;
+}
+@media (max-width: 480px) {
+    .social-links {
+        gap: 15px;
+        font-size: 24px;
+    }
+    
+    .social-link {
+        width: 45px;
+        height: 45px;
+    }
+}
