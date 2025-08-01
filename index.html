@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پیش‌بینی آب‌وهوا حرفه‌ای</title>
+    
+    <!-- فونت‌های مدرن -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- آیکون‌های پیشرفته -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- انیمیشن‌ها -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <!-- استایل‌ها -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app" :class="{ 'dark-mode': darkMode }">
+        <!-- هدر حرفه‌ای -->
+        <header class="app-header animate__animated animate__fadeInDown">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo-icon">
+                        <i class="fas fa-cloud-sun"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>آب‌وهوا هوشمند</h1>
+                        <p>دقیق‌ترین پیش‌بینی‌ها در جهان</p>
+                    </div>
+                </div>
+                
+                <div class="header-actions">
+                    <button @click="toggleDarkMode" class="theme-toggle">
+                        <i :class="darkMode ? 'fas fa-sun' : 'fas fa-moon'"></i>
+                    </button>
+                    <button @click="showInfo = !showInfo" class="info-btn">
+                        <i class="fas fa-info-circle"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- پنل اطلاعات -->
+        <div v-if="showInfo" class="info-panel animate__animated animate__fadeIn">
+            <div class="info-content">
+                <h3>درباره اپلیکیشن</h3>
+                <p>این اپلیکیشن با استفاده از Vue.js و WeatherAPI.com طراحی شده است.</p>
+                <p>ویژگی‌ها: پیش‌بینی دقیق، طراحی مدرن، حالت تاریک و...</p>
+                <button @click="showInfo = false" class="close-info">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+
+<!-- بخش جستجو پیشرفته -->
+<section class="search-section animate__animated animate__fadeInUp">
+    <div class="search-container">
+        <div class="search-input-wrapper">
+            <i class="fas fa-search search-icon"></i>
+            <input 
+                type="text" 
+                v-model="city" 
+                @keyup.enter="fetchWeather"
+                @focus="showSuggestions"
+                @blur="hideSuggestions"
+                placeholder="نام شهر را وارد کنید..."
+                class="search-input"
+            >
+            <button @click="fetchWeather" class="search-btn">
+                <span>جستجو</span>
+                <i class="fas fa-arrow-left"></i>
+            </button>
+        </div>
+        
+        <!-- پیشنهادات هوشمند (فقط وقتی فوکوس وجود دارد) -->
+        <div v-if="isSearchFocused && city.length > 1 && suggestions.length" 
+             class="suggestions animate__animated animate__fadeIn"
+             @mousedown="showSuggestions">
+            <div 
+                v-for="(suggestion, index) in suggestions" 
+                :key="index"
+                @click="selectCity(suggestion)"
+                class="suggestion-item"
+                :style="`animation-delay: ${index * 0.1}s`"
+            >
+                <i class="fas fa-map-marker-alt"></i>
+                <span>{{ suggestion }}</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- دکمه موقعیت مکانی -->
+    <button @click="getLocationWeather" class="location-btn">
+        <i class="fas fa-location-crosshairs"></i>
+        <span>موقعیت فعلی من</span>
+    </button>
+</section>
+
+        <!-- لودینگ پیشرفته -->
+        <div v-if="loading" class="loading-section animate__animated animate__fadeIn">
+            <div class="loading-animation">
+                <div class="weather-loader">
+                    <i class="fas fa-cloud-sun"></i>
+                    <div class="loader-circle"></div>
+                </div>
+                <p>در حال دریافت اطلاعات آب‌وهوا...</p>
+            </div>
+        </div>
+
+        <!-- پیام خطا حرفه‌ای -->
+        <div v-if="error" class="error-section animate__animated animate__shakeX">
+            <div class="error-content">
+                <div class="error-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="error-text">
+                    <h3>خطا در دریافت اطلاعات</h3>
+                    <p>{{ error }}</p>
+                </div>
+                <button @click="error = null" class="error-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- محتوای اصلی آب‌وهوا -->
+        <main v-if="weatherData" class="weather-main animate__animated animate__fadeIn">
+            <!-- کارت آب‌وهوا اصلی -->
+            <section class="current-weather">
+                <div class="weather-card glass-effect">
+                    <!-- بخش بالایی کارت -->
+                    <div class="card-header">
+                        <div class="location-info">
+                            <h2>{{ weatherData.location.name }}</h2>
+                            <div class="location-details">
+                                <span><i class="fas fa-globe"></i> {{ weatherData.location.country }}</span>
+                                <span><i class="fas fa-clock"></i> {{ currentTime }}</span>
+                            </div>
+                        </div>
+                        <div class="weather-main-icon">
+                            <img :src="weatherData.current.condition.icon" alt="آیکون">
+                            <div class="icon-bg"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- بخش دما -->
+                    <div class="temperature-section">
+                        <div class="temp-display">
+                            <span class="temp-value">{{ weatherData.current.temp_c }}</span>
+                            <span class="temp-unit">°C</span>
+                        </div>
+                        <div class="temp-details">
+                            <p class="weather-description">{{ weatherData.current.condition.text }}</p>
+                            <div class="temp-range">
+                                <span>احساس: {{ weatherData.current.feelslike_c }}°C</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- جزئیات آب‌وهوا -->
+                    <div class="weather-details-grid">
+                        <div class="detail-card">
+                            <div class="detail-icon">
+                                <i class="fas fa-tint"></i>
+                            </div>
+                            <div class="detail-info">
+                                <span class="detail-value">{{ weatherData.current.humidity }}%</span>
+                                <span class="detail-label">رطوبت</span>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-card">
+                            <div class="detail-icon">
+                                <i class="fas fa-wind"></i>
+                            </div>
+                            <div class="detail-info">
+                                <span class="detail-value">{{ weatherData.current.wind_kph }}</span>
+                                <span class="detail-label">سرعت باد (km/h)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-card">
+                            <div class="detail-icon">
+                                <i class="fas fa-compress-arrows-alt"></i>
+                            </div>
+                            <div class="detail-info">
+                                <span class="detail-value">{{ weatherData.current.pressure_mb }}</span>
+                                <span class="detail-label">فشار (hPa)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-card">
+                            <div class="detail-icon">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <div class="detail-info">
+                                <span class="detail-value">{{ weatherData.current.vis_km }}</span>
+                                <span class="detail-label">دید (km)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-card">
+                            <div class="detail-icon">
+                                <i class="fas fa-sun"></i>
+                            </div>
+                            <div class="detail-info">
+                                <span class="detail-value">{{ weatherData.current.uv }}</span>
+                                <span class="detail-label">اشعه UV</span>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-card">
+                            <div class="detail-icon">
+                                <i class="fas fa-cloud"></i>
+                            </div>
+                            <div class="detail-info">
+                                <span class="detail-value">{{ weatherData.current.cloud }}</span>
+                                <span class="detail-label">ابری (%)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- پیش‌بینی 5 روزه -->
+            <section class="forecast-section">
+                <h3 class="section-title">پیش‌بینی 5 روز آینده</h3>
+                <div class="forecast-container">
+                    <div 
+                        v-for="(day, index) in forecastData" 
+                        :key="index"
+                        class="forecast-card glass-effect"
+                        :style="`animation-delay: ${index * 0.1}s`"
+                    >
+                        <div class="forecast-date">
+                            {{ new Date(day.date).toLocaleDateString('fa-IR', { weekday: 'long' }) }}
+                        </div>
+                        <div class="forecast-icon">
+                            <img :src="day.day.condition.icon" alt="آیکون">
+                        </div>
+                        <div class="forecast-temp">
+                            <span class="temp-max">{{ day.day.maxtemp_c }}°</span>
+                            <span class="temp-divider">/</span>
+                            <span class="temp-min">{{ day.day.mintemp_c }}°</span>
+                        </div>
+                        <div class="forecast-desc">{{ day.day.condition.text }}</div>
+                        <div class="forecast-details">
+                            <div class="forecast-detail">
+                                <i class="fas fa-tint"></i>
+                                <span>{{ day.day.avghumidity }}%</span>
+                            </div>
+                            <div class="forecast-detail">
+                                <i class="fas fa-wind"></i>
+                                <span>{{ day.day.maxwind_kph }} km/h</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- بخش اضافی: ساعت‌های آینده -->
+            <section class="hourly-forecast">
+                <h3 class="section-title">ساعت‌های آینده</h3>
+                <div class="hourly-container">
+                    <div 
+                        v-for="(hour, index) in hourlyForecast" 
+                        :key="index"
+                        class="hourly-card glass-effect"
+                    >
+                        <div class="hourly-time">{{ hour.time.split(' ')[1] }}</div>
+                        <div class="hourly-icon">
+                            <img :src="hour.condition.icon" alt="آیکون">
+                        </div>
+                        <div class="hourly-temp">{{ hour.temp_c }}°</div>
+                        <div class="hourly-desc">{{ hour.condition.text }}</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- فوتر حرفه‌ای -->
+        <footer class="app-footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>داده‌ها از:</h4>
+                    <a href="https://www.weatherapi.com/" target="_blank">
+                        <img src="https://cdn.weatherapi.com/v4/images/weatherapi_logo.png" alt="WeatherAPI">
+                    </a>
+                </div>
+                <div class="footer-section">
+                    <h4>طراحی شده با:</h4>
+                    <div class="tech-stack">
+                        <i class="fab fa-vuejs" title="Vue.js"></i>
+                        <i class="fab fa-css3-alt" title="CSS3"></i>
+                        <i class="fab fa-html5" title="HTML5"></i>
+                        <i class="fab fa-js" title="JavaScript"></i>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>کپی‌رایت:</h4>
+                    <p>&copy; {{ new Date().getFullYear() }} - طراحی شده با ❤️</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- اسکریپت‌ها -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

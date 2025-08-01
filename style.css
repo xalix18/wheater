@@ -1,0 +1,1029 @@
+/* ===========================================
+   متغیرهای اصلی و تنظیمات اولیه
+   =========================================== */
+   :root {
+    /* رنگ‌های حالت روشن */
+    --primary: #3498db;
+    --secondary: #2c3e50;
+    --accent: #e74c3c;
+    --background: #f5f7fa;
+    --surface: #ffffff;
+    --text-primary: #2c3e50;
+    --text-secondary: #7f8c8d;
+    --border: #e1e8ed;
+    --shadow: rgba(0, 0, 0, 0.1);
+    --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    
+    /* رنگ‌های حالت تاریک */
+    --dark-background: #1a1a2e;
+    --dark-surface: #16213e;
+    --dark-text: #eee;
+    --dark-secondary: #a8b2d1;
+}
+
+/* تنظیمات کلی */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Vazirmatn', sans-serif;
+    background: var(--background);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+    transition: all 0.3s ease;
+}
+
+body.dark-mode {
+    background: var(--dark-background);
+    color: var(--dark-text);
+}
+
+#app {
+    min-height: 100vh;
+    position: relative;
+}
+
+/* ===========================================
+   هدر حرفه‌ای
+   =========================================== */
+.app-header {
+    padding: 20px 0;
+    background: var(--surface);
+    box-shadow: 0 2px 20px var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.dark-mode .app-header {
+    background: var(--dark-surface);
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--gradient);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.logo-text h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.dark-mode .logo-text h1 {
+    color: var(--dark-text);
+}
+
+.logo-text p {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.dark-mode .logo-text p {
+    color: var(--dark-secondary);
+}
+
+.header-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.theme-toggle, .info-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: var(--background);
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.dark-mode .theme-toggle, .dark-mode .info-btn {
+    background: var(--dark-background);
+    color: var(--dark-text);
+}
+
+.theme-toggle:hover, .info-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px var(--shadow);
+}
+
+/* ===========================================
+   پنل اطلاعات
+   =========================================== */
+.info-panel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--surface);
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 10px 40px var(--shadow);
+    z-index: 1000;
+}
+
+.dark-mode .info-panel {
+    background: var(--dark-surface);
+}
+
+.info-content {
+    position: relative;
+}
+
+.info-content h3 {
+    margin-bottom: 15px;
+    color: var(--primary);
+}
+
+.info-content p {
+    margin-bottom: 10px;
+    color: var(--text-secondary);
+}
+
+.dark-mode .info-content p {
+    color: var(--dark-secondary);
+}
+
+.close-info {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ===========================================
+   بخش جستجو
+   =========================================== */
+   .search-section {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.search-container {
+    position: relative;
+    margin-bottom: 20px;
+    z-index: 10;
+}
+
+.search-input-wrapper {
+    display: flex;
+    background: var(--surface);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.dark-mode .search-input-wrapper {
+    background: var(--dark-surface);
+}
+
+.search-input-wrapper:focus-within {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px var(--shadow);
+}
+
+.search-icon {
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    color: var(--text-secondary);
+}
+
+.dark-mode .search-icon {
+    color: var(--dark-secondary);
+}
+
+.search-input {
+    flex: 1;
+    padding: 15px 0;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    outline: none;
+    color: var(--text-primary);
+}
+
+.dark-mode .search-input {
+    color: var(--dark-text);
+}
+
+.search-btn {
+    padding: 0 25px;
+    border: none;
+    background: var(--gradient);
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+}
+
+.search-btn:hover {
+    opacity: 0.9;
+}
+
+.suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    border-radius: 15px;
+    margin-top: 10px;
+    box-shadow: 0 5px 20px var(--shadow);
+    z-index: 1000; /* افزایش z-index */
+    overflow: hidden;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.dark-mode .suggestions {
+    background: var(--dark-surface);
+}
+
+.suggestion-item {
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    z-index: 1001;
+    border-bottom: 1px solid var(--border);
+}
+
+.suggestion-item:hover {
+    background: var(--background);
+}
+
+.dark-mode .suggestion-item:hover {
+    background: var(--dark-background);
+}
+
+.dark-mode .suggestion-item {
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+
+.location-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 auto;
+    padding: 12px 20px;
+    border: none;
+    background: var(--surface);
+    border-radius: 10px;
+    cursor: pointer;
+    color: var(--text-primary);
+    font-weight: 500;
+    box-shadow: 0 3px 15px var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.dark-mode .location-btn {
+    background: var(--dark-surface);
+    color: var(--dark-text);
+}
+
+.location-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px var(--shadow);
+}
+
+/* ===========================================
+   لودینگ پیشرفته
+   =========================================== */
+.loading-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    padding: 40px;
+}
+
+.loading-animation {
+    text-align: center;
+}
+
+.weather-loader {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 20px;
+}
+
+.weather-loader i {
+    font-size: 50px;
+    color: var(--primary);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.loader-circle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 3px solid var(--background);
+    border-top: 3px solid var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.dark-mode .loader-circle {
+    border-color: var(--dark-background);
+    border-top-color: var(--primary);
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ===========================================
+   پیام خطا حرفه‌ای
+   =========================================== */
+.error-section {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.error-content {
+    display: flex;
+    align-items: center;
+    background: var(--surface);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 5px 20px var(--shadow);
+    position: relative;
+}
+
+.dark-mode .error-content {
+    background: var(--dark-surface);
+}
+
+.error-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    margin-left: 20px;
+}
+
+.error-text h3 {
+    color: var(--accent);
+    margin-bottom: 5px;
+}
+
+.error-text p {
+    color: var(--text-secondary);
+}
+
+.dark-mode .error-text p {
+    color: var(--dark-secondary);
+}
+
+.error-close {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: var(--background);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+}
+
+.dark-mode .error-close {
+    background: var(--dark-background);
+    color: var(--dark-secondary);
+}
+
+/* ===========================================
+   کارت آب‌وهوا اصلی
+   =========================================== */
+.weather-main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px 40px;
+}
+
+.weather-card {
+    background: var(--surface);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px var(--shadow);
+    margin-bottom: 40px;
+    transition: all 0.3s ease;
+}
+
+.dark-mode .weather-card {
+    background: var(--dark-surface);
+}
+
+.weather-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 50px var(--shadow);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px;
+    background: var(--gradient);
+    color: white;
+}
+
+.location-info h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.location-details {
+    display: flex;
+    gap: 20px;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.location-details span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.weather-main-icon {
+    position: relative;
+    width: 100px;
+    height: 100px;
+}
+
+.weather-main-icon img {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 2;
+}
+
+.icon-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    z-index: 1;
+    animation: pulse 2s infinite;
+}
+
+.temperature-section {
+    padding: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+}
+
+.dark-mode .temperature-section {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.temp-display {
+    display: flex;
+    align-items: baseline;
+}
+
+.temp-value {
+    font-size: 72px;
+    font-weight: 700;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+}
+
+.temp-unit {
+    font-size: 36px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-right: 10px;
+}
+
+.dark-mode .temp-unit {
+    color: var(--dark-secondary);
+}
+
+.temp-details {
+    text-align: left;
+}
+
+.weather-description {
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    text-transform: capitalize;
+}
+
+.dark-mode .weather-description {
+    color: var(--dark-text);
+}
+
+.temp-range {
+    color: var(--text-secondary);
+}
+
+.dark-mode .temp-range {
+    color: var(--dark-secondary);
+}
+
+.weather-details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    padding: 30px;
+}
+
+.detail-card {
+    background: var(--background);
+    border-radius: 15px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: all 0.3s ease;
+}
+
+.dark-mode .detail-card {
+    background: var(--dark-background);
+}
+
+.detail-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px var(--shadow);
+}
+
+.detail-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--gradient);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.detail-info {
+    flex: 1;
+}
+
+.detail-value {
+    display: block;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.dark-mode .detail-value {
+    color: var(--dark-text);
+}
+
+.detail-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.dark-mode .detail-label {
+    color: var(--dark-secondary);
+}
+
+/* ===========================================
+   پیش‌بینی 5 روزه
+   =========================================== */
+.forecast-section {
+    margin-bottom: 40px;
+}
+
+.section-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+.dark-mode .section-title {
+    color: var(--dark-text);
+}
+
+.forecast-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+}
+
+.forecast-card {
+    background: var(--surface);
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 5px 20px var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.dark-mode .forecast-card {
+    background: var(--dark-surface);
+}
+
+.forecast-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px var(--shadow);
+}
+
+.forecast-date {
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 15px;
+}
+
+.forecast-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 15px;
+}
+
+.forecast-icon img {
+    width: 100%;
+    height: 100%;
+}
+
+.forecast-temp {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.temp-max {
+    color: var(--accent);
+}
+
+.temp-divider {
+    color: var(--text-secondary);
+    margin: 0 5px;
+}
+
+.temp-min {
+    color: var(--primary);
+}
+
+.forecast-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 15px;
+}
+
+.dark-mode .forecast-desc {
+    color: var(--dark-secondary);
+}
+
+.forecast-details {
+    display: flex;
+    justify-content: space-around;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.dark-mode .forecast-details {
+    color: var(--dark-secondary);
+}
+
+.forecast-detail {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* ===========================================
+   پیش‌بینی ساعتی
+   =========================================== */
+.hourly-forecast {
+    margin-bottom: 40px;
+}
+
+.hourly-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 15px;
+    padding: 10px 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) var(--background);
+}
+
+.hourly-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.hourly-container::-webkit-scrollbar-track {
+    background: var(--background);
+    border-radius: 4px;
+}
+
+.hourly-container::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 4px;
+}
+
+.hourly-card {
+    min-width: 120px;
+    background: var(--surface);
+    border-radius: 15px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 5px 20px var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.dark-mode .hourly-card {
+    background: var(--dark-surface);
+}
+
+.hourly-card:hover {
+    transform: translateY(-3px);
+}
+
+.hourly-time {
+    font-weight: 500;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+}
+
+.dark-mode .hourly-time {
+    color: var(--dark-text);
+}
+
+.hourly-icon {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 10px;
+}
+
+.hourly-icon img {
+    width: 100%;
+    height: 100%;
+}
+
+.hourly-temp {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: var(--primary);
+}
+
+.hourly-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.dark-mode .hourly-desc {
+    color: var(--dark-secondary);
+}
+
+/* ===========================================
+   افکت شیشه‌ای (Glassmorphism)
+   =========================================== */
+.glass-effect {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.dark-mode .glass-effect {
+    background: rgba(30, 30, 50, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ===========================================
+   فوتر حرفه‌ای
+   =========================================== */
+.app-footer {
+    background: var(--surface);
+    padding: 40px 0;
+    margin-top: 60px;
+    border-top: 1px solid var(--border);
+}
+
+.dark-mode .app-footer {
+    background: var(--dark-surface);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.footer-section h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: var(--text-primary);
+}
+
+.dark-mode .footer-section h4 {
+    color: var(--dark-text);
+}
+
+.footer-section a img {
+    height: 30px;
+    filter: grayscale(100%);
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.footer-section a:hover img {
+    filter: grayscale(0%);
+    opacity: 1;
+}
+
+.tech-stack {
+    display: flex;
+    gap: 15px;
+    font-size: 24px;
+}
+
+.tech-stack i {
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+}
+
+.dark-mode .tech-stack i {
+    color: var(--dark-secondary);
+}
+
+.tech-stack i:hover {
+    color: var(--primary);
+    transform: translateY(-3px);
+}
+
+.footer-section p {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.dark-mode .footer-section p {
+    color: var(--dark-secondary);
+}
+
+/* ===========================================
+   ریسپانسیو
+   =========================================== */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .card-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+    
+    .temperature-section {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+    
+    .temp-value {
+        font-size: 56px;
+    }
+    
+    .weather-details-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .forecast-container {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-section {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .search-input-wrapper {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .search-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .temp-value {
+        font-size: 48px;
+    }
+    
+    .weather-details-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .forecast-container {
+        grid-template-columns: 1fr;
+    }
+}
